@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Mari Mägi",   "type": "teacher", "email": "mari.magi@kool.ee",    "department": "Infotehnoloogia" },
+  { "id": 2, "name": "Jüri Jõgi",   "type": "teacher", "email": "jyri.jogi@kool.ee",    "department": "Matemaatika" },
+  { "id": 3, "name": "TAK25",       "type": "group",   "email": "tak25@kool.ee",         "department": null },
+  { "id": 4, "name": "TAR24",       "type": "group",   "email": "tar24@kool.ee",         "department": null },
+  { "id": 5, "name": "Peeter Pärn", "type": "teacher", "email": "peeter.parn@kool.ee",  "department": "Infotehnoloogia" }
+]

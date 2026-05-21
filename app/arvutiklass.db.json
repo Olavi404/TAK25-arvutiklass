@@ -1,0 +1,163 @@
+{
+  "lesson_types": [
+    {
+      "id": 1,
+      "name": "Loeng",
+      "description": "Õpetaja-juhitud loeng"
+    },
+    {
+      "id": 2,
+      "name": "Praktikum",
+      "description": "Iseseisvad harjutused"
+    },
+    {
+      "id": 3,
+      "name": "Eksam",
+      "description": "Kirjalik või arvutieksam"
+    },
+    {
+      "id": 4,
+      "name": "Konsultatsioon",
+      "description": "Individuaalne nõustamine"
+    }
+  ],
+  "classrooms": [
+    {
+      "id": 1,
+      "name": "A101",
+      "capacity": 30,
+      "location": "A-korpus 1. korrus",
+      "equipment": "PC x30, projektor"
+    },
+    {
+      "id": 2,
+      "name": "A102",
+      "capacity": 25,
+      "location": "A-korpus 1. korrus",
+      "equipment": "PC x25, projektor"
+    },
+    {
+      "id": 3,
+      "name": "B201",
+      "capacity": 20,
+      "location": "B-korpus 2. korrus",
+      "equipment": "PC x20, tahvel"
+    },
+    {
+      "id": 4,
+      "name": "B202",
+      "capacity": 35,
+      "location": "B-korpus 2. korrus",
+      "equipment": "PC x35, projektor x2"
+    },
+    {
+      "id": 5,
+      "name": "C301",
+      "capacity": 15,
+      "location": "C-korpus 3. korrus",
+      "equipment": "MacBook x15"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Mari Mägi",
+      "type": "teacher",
+      "email": "mari@kool.ee",
+      "department": "Infotehnoloogia"
+    },
+    {
+      "id": 2,
+      "name": "Jüri Jõgi",
+      "type": "teacher",
+      "email": "jyri@kool.ee",
+      "department": "Matemaatika"
+    },
+    {
+      "id": 3,
+      "name": "TAK25",
+      "type": "group",
+      "email": "tak25@kool.ee",
+      "department": null
+    },
+    {
+      "id": 4,
+      "name": "TAR24",
+      "type": "group",
+      "email": "tar24@kool.ee",
+      "department": null
+    },
+    {
+      "id": 5,
+      "name": "Peeter Pärn",
+      "type": "teacher",
+      "email": "peeter@kool.ee",
+      "department": "Infotehnoloogia"
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "classroom_id": 1,
+      "user_group_id": 3,
+      "lesson_type_id": 2,
+      "booking_date": "2025-01-13",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "participant_count": 28,
+      "status": "completed",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "classroom_id": 2,
+      "user_group_id": 4,
+      "lesson_type_id": 1,
+      "booking_date": "2025-01-13",
+      "start_time": "10:00",
+      "end_time": "11:30",
+      "participant_count": 22,
+      "status": "completed",
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "classroom_id": 3,
+      "user_group_id": 1,
+      "lesson_type_id": 2,
+      "booking_date": "2025-01-14",
+      "start_time": "12:00",
+      "end_time": "13:30",
+      "participant_count": 18,
+      "status": "active",
+      "notes": "Python"
+    },
+    {
+      "id": 4,
+      "classroom_id": 4,
+      "user_group_id": 2,
+      "lesson_type_id": 3,
+      "booking_date": "2025-01-15",
+      "start_time": "09:00",
+      "end_time": "11:00",
+      "participant_count": 30,
+      "status": "active",
+      "notes": "Eksam"
+    },
+    {
+      "id": 5,
+      "classroom_id": 1,
+      "user_group_id": 4,
+      "lesson_type_id": 1,
+      "booking_date": "2025-01-16",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "participant_count": 25,
+      "status": "active",
+      "notes": ""
+    }
+  ],
+  "nextId": {
+    "bookings": 6
+  }
+}

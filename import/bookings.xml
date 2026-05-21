@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookings>
+  <booking>
+    <classroom_id>1</classroom_id>
+    <user_group_id>3</user_group_id>
+    <lesson_type_id>2</lesson_type_id>
+    <booking_date>2025-01-13</booking_date>
+    <start_time>08:00</start_time>
+    <end_time>09:30</end_time>
+    <participant_count>28</participant_count>
+    <status>completed</status>
+    <notes></notes>
+  </booking>
+  <booking>
+    <classroom_id>2</classroom_id>
+    <user_group_id>4</user_group_id>
+    <lesson_type_id>1</lesson_type_id>
+    <booking_date>2025-01-13</booking_date>
+    <start_time>10:00</start_time>
+    <end_time>11:30</end_time>
+    <participant_count>22</participant_count>
+    <status>completed</status>
+    <notes></notes>
+  </booking>
+  <booking>
+    <classroom_id>3</classroom_id>
+    <user_group_id>1</user_group_id>
+    <lesson_type_id>2</lesson_type_id>
+    <booking_date>2025-01-14</booking_date>
+    <start_time>12:00</start_time>
+    <end_time>13:30</end_time>
+    <participant_count>18</participant_count>
+    <status>active</status>
+    <notes>Programmeerimine Pythoniga</notes>
+  </booking>
+  <booking>
+    <classroom_id>4</classroom_id>
+    <user_group_id>2</user_group_id>
+    <lesson_type_id>3</lesson_type_id>
+    <booking_date>2025-01-15</booking_date>
+    <start_time>09:00</start_time>
+    <end_time>11:00</end_time>
+    <participant_count>30</participant_count>
+    <status>active</status>
+    <notes>Andmebaasid eksam</notes>
+  </booking>
+  <booking>
+    <classroom_id>1</classroom_id>
+    <user_group_id>4</user_group_id>
+    <lesson_type_id>1</lesson_type_id>
+    <booking_date>2025-01-16</booking_date>
+    <start_time>08:00</start_time>
+    <end_time>09:30</end_time>
+    <participant_count>25</participant_count>
+    <status>active</status>
+    <notes></notes>
+  </booking>
+</bookings>

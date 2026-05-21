@@ -1,0 +1,7 @@
+[
+  { "rank": 1, "classroom": "A101", "bookings_count": 3, "total_hours": 4.5, "location": "A-korpus 1. korrus" },
+  { "rank": 2, "classroom": "A102", "bookings_count": 2, "total_hours": 3.0, "location": "A-korpus 1. korrus" },
+  { "rank": 3, "classroom": "B202", "bookings_count": 1, "total_hours": 2.0, "location": "B-korpus 2. korrus" },
+  { "rank": 4, "classroom": "B201", "bookings_count": 1, "total_hours": 1.5, "location": "B-korpus 2. korrus" },
+  { "rank": 5, "classroom": "C301", "bookings_count": 1, "total_hours": 1.0, "location": "C-korpus 3. korrus" }
+]

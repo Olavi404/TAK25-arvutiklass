@@ -1,0 +1,6 @@
+id,name,capacity,location,equipment
+1,A101,30,A-korpus 1. korrus,"PC x30, projektor, tahvel"
+2,A102,25,A-korpus 1. korrus,"PC x25, projektor"
+3,B201,20,B-korpus 2. korrus,"PC x20, interaktiivne tahvel"
+4,B202,35,B-korpus 2. korrus,"PC x35, projektor x2"
+5,C301,15,C-korpus 3. korrus,"MacBook x15, projektor"
