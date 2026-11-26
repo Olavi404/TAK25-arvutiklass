@@ -1,6 +1,6 @@
 # Arvutiklasside broneerimissüsteem
 
-**Grupp:** TAK25 | **Tehnoloogia:** Node.js + Express + SQLite (better-sqlite3)
+**Grupp:** TAK25 | **Tehnoloogia:** Node.js + Express + JSON fail (sql.js on sõltuvusena loetletud)
 
 ## Käivitamine
 
@@ -29,7 +29,7 @@ Ava brauser: **http://localhost:3000**
 
 ## Andmebaas
 
-SQLite andmefail luuakse automaatselt: `app/arvutiklass.db`  
+JSON andmefail luuakse automaatselt: `app/arvutiklass.db.json`  
 Tabelid: `classroom`, `user_or_group`, `lesson_type`, `booking`
 
 ## API lõpp-punktid
@@ -44,3 +44,7 @@ Tabelid: `classroom`, `user_or_group`, `lesson_type`, `booking`
 | GET | `/api/stats` | Statistika (top5, nädalane kasutus) |
 | GET | `/api/classrooms` | Klassid |
 | GET | `/api/users` | Kasutajad/grupid |
+
+## Testimine
+
+`npm ci && npm test` kasutab ajutist andmefaili.

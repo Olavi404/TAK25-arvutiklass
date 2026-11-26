@@ -5,8 +5,8 @@ const fs = require('fs');
 const initSqlJs = require('sql.js');
 
 const app = express();
-const PORT = 3000;
-const DB_FILE = path.join(__dirname, 'arvutiklass.db.json');
+const PORT = Number(process.env.PORT ?? 3000);
+const DB_FILE = process.env.CLASSROOM_DB_FILE || path.join(__dirname, 'arvutiklass.db.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -338,4 +338,5 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Rakendus käivitatud: http://localhost:${PORT}`));
+if (require.main === module) app.listen(PORT, () => console.log(`Rakendus käivitatud: http://localhost:${PORT}`));
+module.exports = app;
