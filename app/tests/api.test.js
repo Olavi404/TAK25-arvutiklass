@@ -39,3 +39,12 @@ test('booking CRUD and invalid time', async () => {
   assert.equal((await req('/api/bookings/'+id)).status,404);
   assert.equal((await req('/api/bookings/999999')).status,404);
 });
+
+test('rejects malformed fields and protects server assigned IDs', async () => {
+  const data = {classroom_id:1,user_group_id:1,lesson_type_id:1,booking_date:'2030-01-01',start_time:'10:00',end_time:'11:00',participant_count:3,status:'active',notes:'test'};
+  for (const invalid of [{status:'invalid'},{classroom_id:9999},{booking_date:'2030-02-31'},{start_time:'bad'},{participant_count:-1}]) assert.equal((await req('/api/bookings','POST',{...data,...invalid})).status,400);
+  const created = await req('/api/bookings','POST',{...data,id:99999}); assert.equal(created.status,200);
+  const {id}=await created.json(); assert.notEqual(id,99999);
+  assert.equal((await req('/api/bookings/'+id,'PUT',{...data,id:99999})).status,200);
+  assert.equal((await (await req('/api/bookings/'+id)).json()).id,id);
+});

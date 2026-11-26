@@ -179,15 +179,18 @@ function msg(t, ok=true) {
   setTimeout(()=>el.classList.add('hidden'),3000);
 }
 
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
 async function loadBookings() {
   const r = await fetch('/api/bookings').then(r=>r.json());
   document.getElementById('bookingBody').innerHTML = r.map(b=>\`
-    <tr><td>\${b.id}</td><td>\${b.classroom_name}</td><td>\${b.user_name}</td><td>\${b.type_name||'—'}</td>
-    <td>\${b.booking_date}</td><td>\${b.start_time}–\${b.end_time}</td><td>\${b.participant_count}</td>
-    <td><span class="badge badge-\${b.status}">\${b.status}</span></td>
+    <tr><td>\${escapeHTML(b.id)}</td><td>\${escapeHTML(b.classroom_name)}</td><td>\${escapeHTML(b.user_name)}</td><td>\${escapeHTML(b.type_name)}</td>
+    <td>\${escapeHTML(b.booking_date)}</td><td>\${escapeHTML(b.start_time)}–\${escapeHTML(b.end_time)}</td><td>\${escapeHTML(b.participant_count)}</td>
+    <td><span class="badge badge-\${escapeHTML(b.status)}">\${escapeHTML(b.status)}</span></td>
     <td style="display:flex;gap:4px">
-      <button class="btn btn-edit" onclick="editBooking(\${b.id})">Muuda</button>
-      <button class="btn btn-danger" onclick="delBooking(\${b.id})">Kustuta</button>
+      <button class="btn btn-edit" onclick="editBooking(\${Number.isSafeInteger(b.id) ? b.id : 0})">Muuda</button>
+      <button class="btn btn-danger" onclick="delBooking(\${Number.isSafeInteger(b.id) ? b.id : 0})">Kustuta</button>
     </td></tr>\`).join('');
 }
 
@@ -197,9 +200,9 @@ async function loadDropdowns() {
     fetch('/api/users').then(r=>r.json()),
     fetch('/api/types').then(r=>r.json()),
   ]);
-  document.getElementById('f_classroom').innerHTML = cls.map(c=>\`<option value="\${c.id}">\${c.name} (maht \${c.capacity})</option>\`).join('');
-  document.getElementById('f_user').innerHTML = usr.map(u=>\`<option value="\${u.id}">\${u.name} (\${u.type})</option>\`).join('');
-  document.getElementById('f_type').innerHTML = '<option value="">— vali tüüp —</option>'+typ.map(t=>\`<option value="\${t.id}">\${t.name}</option>\`).join('');
+  document.getElementById('f_classroom').innerHTML = cls.map(c=>\`<option value="\${escapeHTML(c.id)}">\${escapeHTML(c.name)} (maht \${escapeHTML(c.capacity)})</option>\`).join('');
+  document.getElementById('f_user').innerHTML = usr.map(u=>\`<option value="\${escapeHTML(u.id)}">\${escapeHTML(u.name)} (\${escapeHTML(u.type)})</option>\`).join('');
+  document.getElementById('f_type').innerHTML = '<option value="">— vali tüüp —</option>'+typ.map(t=>\`<option value="\${escapeHTML(t.id)}">\${escapeHTML(t.name)}</option>\`).join('');
 }
 
 async function editBooking(id) {
@@ -252,7 +255,7 @@ async function loadStats() {
     <div class="stat-box"><div class="stat-num">\${s.active}</div><div class="stat-lbl">Aktiivseid</div></div>
     <div class="stat-box"><div class="stat-num">\${s.classrooms}</div><div class="stat-lbl">Klasse</div></div>
     <div class="stat-box"><div class="stat-num">\${s.users}</div><div class="stat-lbl">Kasutajaid/gruppe</div></div>\`;
-  document.getElementById('top5').innerHTML = s.top5.map(r=>\`<tr><td>\${r.name}</td><td>\${r.cnt}</td><td>\${r.hours}h</td></tr>\`).join('');
+  document.getElementById('top5').innerHTML = s.top5.map(r=>\`<tr><td>\${escapeHTML(r.name)}</td><td>\${escapeHTML(r.cnt)}</td><td>\${escapeHTML(r.hours)}h</td></tr>\`).join('');
   if(chartInst) chartInst.destroy();
   chartInst = new Chart(document.getElementById('chart').getContext('2d'),{
     type:'bar',
@@ -263,7 +266,7 @@ async function loadStats() {
 
 async function loadClassrooms() {
   const r = await fetch('/api/classrooms').then(r=>r.json());
-  document.getElementById('classBody').innerHTML = r.map(c=>\`<tr><td>\${c.name}</td><td>\${c.capacity}</td><td>\${c.location||'—'}</td><td>\${c.equipment||'—'}</td></tr>\`).join('');
+  document.getElementById('classBody').innerHTML = r.map(c=>\`<tr><td>\${escapeHTML(c.name)}</td><td>\${escapeHTML(c.capacity)}</td><td>\${escapeHTML(c.location)}</td><td>\${escapeHTML(c.equipment)}</td></tr>\`).join('');
 }
 
 showPage('bookings');
@@ -289,10 +292,25 @@ app.get('/api/bookings/:id', (req, res) => {
   b ? res.json(b) : res.status(404).json({ error: 'Ei leitud' });
 });
 
+function validateBooking(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
+  const { classroom_id, user_group_id, lesson_type_id, booking_date, start_time, end_time, participant_count, status, notes = '' } = body;
+  if (!Number.isSafeInteger(classroom_id) || !DB.classrooms.some(c => c.id === classroom_id) ||
+      !Number.isSafeInteger(user_group_id) || !DB.users.some(u => u.id === user_group_id) ||
+      (lesson_type_id !== null && !DB.lesson_types.some(t => t.id === lesson_type_id)) ||
+      typeof booking_date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(booking_date) ||
+      !Number.isFinite(Date.parse(booking_date)) || new Date(booking_date).toISOString().slice(0,10) !== booking_date ||
+      typeof start_time !== 'string' || typeof end_time !== 'string' ||
+      !/^([01]\d|2[0-3]):[0-5]\d$/.test(start_time) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(end_time) || end_time <= start_time ||
+      !Number.isSafeInteger(participant_count) || participant_count < 1 ||
+      !['active','cancelled','completed'].includes(status) || typeof notes !== 'string' || notes.length > 2000) return null;
+  return {classroom_id,user_group_id,lesson_type_id,booking_date,start_time,end_time,participant_count,status,notes};
+}
+
 app.post('/api/bookings', (req, res) => {
-  const { booking_date, start_time, end_time } = req.body;
-  if (end_time <= start_time) return res.status(400).json({ error: 'Lõppaeg peab olema pärast algusaega' });
-  const b = { id: DB.nextId.bookings++, ...req.body };
+  const validated = validateBooking(req.body);
+  if (!validated) return res.status(400).json({ error: 'Vigased broneeringu andmed' });
+  const b = { ...validated, id: DB.nextId.bookings++ };
   DB.bookings.push(b);
   saveDB();
   res.json({ id: b.id });
@@ -301,9 +319,9 @@ app.post('/api/bookings', (req, res) => {
 app.put('/api/bookings/:id', (req, res) => {
   const idx = DB.bookings.findIndex(b => b.id === +req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Ei leitud' });
-  const { end_time, start_time } = req.body;
-  if (end_time <= start_time) return res.status(400).json({ error: 'Lõppaeg peab olema pärast algusaega' });
-  DB.bookings[idx] = { id: +req.params.id, ...req.body };
+  const validated = validateBooking(req.body);
+  if (!validated) return res.status(400).json({ error: 'Vigased broneeringu andmed' });
+  DB.bookings[idx] = { ...validated, id: +req.params.id };
   saveDB();
   res.json({ ok: true });
 });
