@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const initSqlJs = require('sql.js');
+const { z } = require('zod');
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 3000);
@@ -292,8 +293,22 @@ app.get('/api/bookings/:id', (req, res) => {
   b ? res.json(b) : res.status(404).json({ error: 'Ei leitud' });
 });
 
+const bookingSchema = z.object({
+  classroom_id: z.number().int().positive(),
+  user_group_id: z.number().int().positive(),
+  lesson_type_id: z.number().int().positive().nullable(),
+  booking_date: z.string(),
+  start_time: z.string(),
+  end_time: z.string(),
+  participant_count: z.number().int().positive(),
+  status: z.enum(['active','cancelled','completed']),
+  notes: z.string().max(2000).default('')
+});
+
 function validateBooking(body) {
-  if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
+  const parsed = bookingSchema.safeParse(body);
+  if (!parsed.success) return null;
+  body = parsed.data;
   const { classroom_id, user_group_id, lesson_type_id, booking_date, start_time, end_time, participant_count, status, notes = '' } = body;
   if (!Number.isSafeInteger(classroom_id) || !DB.classrooms.some(c => c.id === classroom_id) ||
       !Number.isSafeInteger(user_group_id) || !DB.users.some(u => u.id === user_group_id) ||
